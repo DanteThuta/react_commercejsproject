@@ -10,8 +10,9 @@ import {
 } from "@material-ui/core";
 import { ShoppingCart } from "@material-ui/icons";
 import useStyles from "./styles";
+import logo from "../../assets/ninja.png";
 
-const Navbar = () => {
+const Navbar = ({ totalItems }) => {
   const classes = useStyles();
   return (
     <>
@@ -19,7 +20,7 @@ const Navbar = () => {
         <Toolbar>
           <Typography className={classes.title} color="inherit">
             <img
-              src=""
+              src={logo}
               alt="CommerceJS"
               height="25px"
               className={classes.image}
@@ -29,7 +30,9 @@ const Navbar = () => {
           <div className={classes.grow}></div>
           <div className={classes.button}>
             <IconButton aria-label="Show Cart Items" color="inherit">
-              <ShoppingCart />
+              <Badge badgeContent={totalItems} color="secondary">
+                <ShoppingCart />
+              </Badge>
             </IconButton>
           </div>
         </Toolbar>
