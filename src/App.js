@@ -19,6 +19,7 @@ const App = () => {
   const handleToAddCart = async (productId, quantity) => {
     const item = await commerce.cart.add(productId, quantity);
     setCart(item.cart); //why also Cart?
+    // console.log("Added to Cart");
   };
 
   useEffect(() => {
