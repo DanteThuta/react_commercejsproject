@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Paper,
   Stepper,
@@ -12,20 +12,40 @@ import {
 import useStyles from "./styles";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
+import { commerce } from "../../../lib/commerce";
 
 const steps = ["Shipping Address", "Payment Details"];
 
-const Checkout = () => {
+const Checkout = ({ cart }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
+  const [checkoutToken, setCheckoutToken] = useState("");
 
   const Confirmation = () => <div>Confkkirmation</div>;
 
   const Form = () => {
-    return activeStep === 0 ? <AddressForm /> : <PaymentForm />;
+    return activeStep === 0 ? (
+      <AddressForm checkoutToken={checkoutToken} />
+    ) : (
+      <PaymentForm />
+    );
     // return <div>form</div>;
   };
 
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const token = await commerce.checkout.generateToken(cart.id, {
+          type: "cart",
+        });
+        // console.log(token);
+        setCheckoutToken(token);
+      } catch (error) {
+        // console.log(error.msg);
+      }
+    };
+    fetchToken();
+  }, [cart]);
   return (
     <>
       <div className={classes.toolbar} />

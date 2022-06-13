@@ -58,6 +58,7 @@ const Cart = ({
             type="button"
             color="primary"
             variant="contained"
+            component={Link} to="/checkout"
           >
             CheckOut
           </Button>

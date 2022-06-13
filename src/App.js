@@ -10,7 +10,6 @@ const App = () => {
   const fetchProducts = async () => {
     const { data } = await commerce.products.list();
     setProducts(data);
-    console.log();
   };
 
   const fetchCart = async () => {
@@ -72,7 +71,7 @@ const App = () => {
               />
             }
           />
-          <Route exact path="/checkout" element={<Checkout />} />
+          <Route exact path="/checkout" element={<Checkout cart={cart} />} />
         </Routes>
       </div>
     </Router>

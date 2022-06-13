@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Grid } from "@material-ui/core";
+import { Input, TextField, Grid } from "@material-ui/core";
 import { useFormContext, Controller } from "react-hook-form";
 
 const CustomInput = ({ name, label, required }) => {
@@ -8,6 +8,7 @@ const CustomInput = ({ name, label, required }) => {
     <Grid item xs={12} sm={6}>
       <Controller
         render={({ field }) => <Input {...field} />}
+        // as={TextField}
         control={control}
         fullWidth
         name={name}
