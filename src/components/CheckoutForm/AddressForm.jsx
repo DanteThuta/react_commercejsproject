@@ -9,11 +9,12 @@ import {
   Menu,
 } from "@material-ui/core";
 import { useForm, FormProvider } from "react-hook-form";
+import { Link } from "react-router-dom";
 import CustomInput from "./CustomInput";
 
 import { commerce } from "../../lib/commerce";
 
-const AddressForm = ({ checkoutToken }) => {
+const AddressForm = ({ checkoutToken, next }) => {
   const methods = useForm();
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState("");
@@ -34,13 +35,6 @@ const AddressForm = ({ checkoutToken }) => {
   //     label: name,
   //   })
   // );
-
-  const options = shippingOptions.map((sOption) => ({
-    id: sOption.id,
-    label: `${sOption.description} - (${sOption.price.formatted_with_symbol})`,
-  }));
-  // console.log(shippingOptions);
-  console.log(options);
 
   const fetchShippingCountries = async (checkoutTokenId) => {
     const { countries } = await commerce.services.localeListShippingCountries(
@@ -71,8 +65,15 @@ const AddressForm = ({ checkoutToken }) => {
       { country, region }
     );
     setShippingOptions(options);
-    setShippingOption(options[0]);
+    setShippingOption(options[0].id);
   };
+
+  const options = shippingOptions.map((sOption) => ({
+    id: sOption.id,
+    label: `${sOption.description} - (${sOption.price.formatted_with_symbol})`,
+  }));
+  // console.log(shippingOptions);
+  // console.log(options);
 
   useEffect(() => {
     fetchShippingCountries(checkoutToken.id);
@@ -97,7 +98,16 @@ const AddressForm = ({ checkoutToken }) => {
         Shipping Address:
       </Typography>
       <FormProvider {...methods}>
-        <form>
+        <form
+          onSubmit={methods.handleSubmit((data) =>
+            next({
+              ...data,
+              shippingCountry,
+              shippingSubdivision,
+              shippingOption,
+            })
+          )}
+        >
           <Grid container spacing={3}>
             <CustomInput required name="firstName" label="First Name" />
             <CustomInput required name="lastName" label="Last Name" />
@@ -159,19 +169,28 @@ const AddressForm = ({ checkoutToken }) => {
             <Grid item xs={12} sm={6} lg={12}>
               <InputLabel>Shipping Options</InputLabel>
               <Select
-                // value={shippingOption}
-                defaultValue={""}
+                value={shippingOption}
+                // defaultValue={""}
                 fullWidth
                 onChange={(e) => setShippingOption(e.target.value)}
               >
-                {/* {options.map((option) => (
+                {options.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.label}
                   </MenuItem>
-                ))} */}
+                ))}
               </Select>
             </Grid>
           </Grid>
+          <br />
+          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+            <Button component={Link} to="/cart" variant="outlined">
+              Back to Cart
+            </Button>
+            <Button type="submit" variant="contained" color="primary">
+              Submit
+            </Button>
+          </div>
         </form>
       </FormProvider>
     </>

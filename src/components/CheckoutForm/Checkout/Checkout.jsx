@@ -20,14 +20,15 @@ const Checkout = ({ cart }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [checkoutToken, setCheckoutToken] = useState("");
+  const [shippingData, setShippingData] = useState({});
 
   const Confirmation = () => <div>Confkkirmation</div>;
 
   const Form = () => {
     return activeStep === 0 ? (
-      <AddressForm checkoutToken={checkoutToken} />
+      <AddressForm checkoutToken={checkoutToken} next={next}/>
     ) : (
-      <PaymentForm />
+      <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
     );
     // return <div>form</div>;
   };
@@ -46,6 +47,15 @@ const Checkout = ({ cart }) => {
     };
     fetchToken();
   }, [cart]);
+
+  const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
+  const next = (data) => {
+    setShippingData(data);
+    nextStep();
+  };
+
   return (
     <>
       <div className={classes.toolbar} />
