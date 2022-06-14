@@ -5,15 +5,28 @@ import { useFormContext, Controller } from "react-hook-form";
 const CustomInput = ({ name, label, required }) => {
   const { control } = useFormContext();
   return (
-    <Grid item xs={12} sm={6}>
-      <Controller
+    <Grid item xs={12} sm={6} >
+      {/* <Controller
         render={({ field }) => <Input {...field} />}
-        // as={TextField}
         control={control}
         fullWidth
         name={name}
         label={label}
         required={required}
+      /> */}
+      <Controller
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <TextField
+            label={label}
+            name={name}
+            {...field}
+            required={required}
+            fullWidth
+            value={field.value}
+          />
+        )}
       />
     </Grid>
   );
