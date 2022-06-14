@@ -16,7 +16,7 @@ import { commerce } from "../../../lib/commerce";
 
 const steps = ["Shipping Address", "Payment Details"];
 
-const Checkout = ({ cart }) => {
+const Checkout = ({ cart, handleCaptureCheckout, error }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [checkoutToken, setCheckoutToken] = useState("");
@@ -26,9 +26,15 @@ const Checkout = ({ cart }) => {
 
   const Form = () => {
     return activeStep === 0 ? (
-      <AddressForm checkoutToken={checkoutToken} next={next}/>
+      <AddressForm checkoutToken={checkoutToken} next={next} />
     ) : (
-      <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
+      <PaymentForm
+        shippingData={shippingData}
+        checkoutToken={checkoutToken}
+        backStep={backStep}
+        nextStep={nextStep}
+        handleCaptureCheckout={handleCaptureCheckout}
+      />
     );
     // return <div>form</div>;
   };
